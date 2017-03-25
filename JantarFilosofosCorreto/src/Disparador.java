@@ -1,6 +1,5 @@
 
 public class Disparador {
-	
 	public static void main(String[] args){
 		int i;
 		System.out.println("INICIO");
