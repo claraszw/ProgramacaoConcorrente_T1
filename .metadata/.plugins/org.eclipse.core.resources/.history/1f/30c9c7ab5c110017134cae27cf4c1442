@@ -1,0 +1,74 @@
+public class Filosofo implements Runnable {
+	
+	//private final Object forks_mutex = new Object();
+	public static final int N = 5;
+	private static int forks[] = {0,0,0,0,0}; /* Essa lista estática 
+	irá armazenar o inteiro correspondende a id do filósofo que contém cada garfo.
+	Se o garfo estiver na mesa, o valor será 0.*/
+	private int id;
+	
+	public Filosofo(int id){
+		this.id = id;
+	}
+	
+	public void Think(){
+		System.out.println("Filosofo " + this.id + " esta pensando");
+		try{
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void Eat(){
+		System.out.println("Filosofo " + this.id + " esta comendo");
+		try{
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public synchronized void Take_fork(int i){
+		//(forks_mutex){
+			while(forks[i]!=0){
+				try {
+					System.out.println("Filosofo " + this.id + " vai dormir");
+					wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Filosofo " + this.id + " acordou");
+			}
+			System.out.println("Filosofo " + this.id + " vai pegar o garfo " + i);
+			forks[i]=this.id;
+		//}	
+	}
+	
+	public synchronized void Put_fork(int i){
+		forks[i] = 0;
+		notifyAll();
+	}
+	
+	@Override
+	public void run() {
+
+		while(true){
+			Think();
+			Take_fork(this.id-1);
+			Take_fork(this.id%N);
+			Eat();
+			Put_fork(this.id-1);
+			Put_fork(this.id%N);
+		}
+		
+	}
+	
+	
+
+}
