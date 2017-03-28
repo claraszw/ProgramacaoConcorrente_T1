@@ -5,7 +5,6 @@ INDEX VERSION 1.127+C:\Users\Clara\Documents\GitHub\ProgramacaoConcorrente_T1\.m
 2667831626.index
 1250592570.index
 2643100498.index
-4113811651.index
 1216683187.index
 4160179269.index
 793912968.index

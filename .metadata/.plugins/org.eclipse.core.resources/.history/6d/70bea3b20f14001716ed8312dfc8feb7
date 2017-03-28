@@ -1,7 +1,6 @@
 public class Filosofo implements Runnable {
 	
-	private static final Object forks_mutex = new Object();/* Esse mutex será utilizado para
-	controlar o uso da variável "forks[]"*/
+	private static final Object forks_mutex = new Object();
 	public static final int N = 5;
 	private static int forks[] = {-1,-1,-1,-1,-1}; /* Essa lista estática 
 	irá armazenar o inteiro correspondende a id do filósofo que contém cada garfo.
@@ -18,6 +17,7 @@ public class Filosofo implements Runnable {
 			Thread.sleep(1000);
 		}
 		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -28,19 +28,11 @@ public class Filosofo implements Runnable {
 			Thread.sleep(1000);
 		}
 		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	/*
-	 * i: número do garfo desejado.
-	 * 
-	 * Essa função é uma região crítica pois le e escreve valores da variável estática "forks",
-	 * portanto, apenas uma thread poderá executá-la por vez.
-	 * O Filosófo tentará adquirir o garfo i. Caso ele esteja disponível, armazena o valor de
-	 *  sua própria id no índice do garfo e libera o mutex. Caso esteja com outro filósofo,
-	 *  escolhe bloquear até que seja acordada pela devolução de um garfo, liberando o mutex.  
-	 * */
 	public void Take_fork(int i){
 		synchronized(forks_mutex){
 		System.out.println("Filosofo " + this.id + " vai tentar pegar o garfo " + i);
@@ -50,6 +42,7 @@ public class Filosofo implements Runnable {
 					forks_mutex.wait();
 					System.out.println("Filosofo " + this.id + " acordou");
 				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -59,13 +52,6 @@ public class Filosofo implements Runnable {
 		}	
 	}
 	
-	/*
-	 * i: garfo a ser devolvido
-	 * Essa função é uma região crítica pois escreve na variável estática "forks",
-	 * portanto, apenas uma thread poderá executá-la por vez.
-	 * Seta o valor do garfo devolvido para -1, acorda threads que estejam bloqueadas
-	 * e então libera o mutex.
-	 * */
 	public void Put_fork(int i){
 		synchronized(forks_mutex){
 		forks[i] = -1;
@@ -74,11 +60,6 @@ public class Filosofo implements Runnable {
 		}
 	}
 	
-	
-	/*
-	 * O Filósofo repete a rotina de pensar, pegar separadamente os garfos, comer
-	 * e devolver separadamente os garfos.
-	 * */
 	@Override
 	public void run() {
 

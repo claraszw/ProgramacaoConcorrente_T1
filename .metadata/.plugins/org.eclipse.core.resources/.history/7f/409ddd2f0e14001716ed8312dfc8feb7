@@ -19,7 +19,12 @@ public class Filosofo implements Runnable {
 		public Filosofo(int id){
 			this.id = id;
 			s.add(new Semaphore(0));
-
+//			try {
+//				((Semaphore) s.get(id)).acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		
 		public void Think(){
@@ -28,6 +33,7 @@ public class Filosofo implements Runnable {
 				Thread.sleep(1000);
 			}
 			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -38,16 +44,11 @@ public class Filosofo implements Runnable {
 				Thread.sleep(1000);
 			}
 			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		/*
-		 * Em uma região crítica seta o estado do Filósofo para faminto e então realiza
-		 * um teste para tentar começar a comer. Por último tenta passar por um semáforo,
-		 * isso ocorrerá somente se o Filósofo tiver adquirido os garfos, caso contrário
-		 * ficará bloqueado até que ele esteja comendo.
-		 * */
 		public void take_forks(){
 			synchronized(mutex){
 				state[this.id]=HUNGRY;
@@ -56,18 +57,11 @@ public class Filosofo implements Runnable {
 			try {
 				((Semaphore) s.get(id)).acquire();
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
-		/*
-		 * id: id do Filósofo a ser testado
-		 * 
-		 * Testa se o Filósofo em questão deveria começar a comer, verificando se ele está com fome
-		 * e se ambos os vizinhos não estão comendo, deixando os garfos necessários disponíveis.
-		 * Se os garfos estiverem disponíveis, o estado é setado para comendo e o semáforo liberado
-		 * para sinalizar que os garfos foram adquiridos com sucesso.
-		 * */
 		private void test(int id) {
 			
 			if(state[id] == HUNGRY && state[(id+N-1)%N]!=EATING && state[(id+1)%N]!=EATING ){
@@ -77,10 +71,6 @@ public class Filosofo implements Runnable {
 			
 		}
 		
-		/*
-		 * Seta o estado do Filósofo para pensando e verifica se essa mudança faz com que algum
-		 * de seus vizinhos comece a comer.
-		 * */
 		public void put_forks(){
 			synchronized(mutex){
 				state[this.id]=THINKING;
@@ -89,10 +79,6 @@ public class Filosofo implements Runnable {
 			}
 		}
 
-		/*
-		 * O Filósofo repete a rotina de pensar, pegar os dois garfos ao mesmo tempo, comer
-		 * e devolver os dois garfos ao mesmo tempo.
-		 * */
 		@Override
 		public void run() {
 			while(true){

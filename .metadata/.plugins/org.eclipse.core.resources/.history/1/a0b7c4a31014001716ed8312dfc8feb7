@@ -50,6 +50,7 @@ public class Filosofo implements Runnable {
 					forks_mutex.wait();
 					System.out.println("Filosofo " + this.id + " acordou");
 				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
