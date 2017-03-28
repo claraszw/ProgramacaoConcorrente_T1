@@ -1,6 +1,6 @@
 public class Filosofo implements Runnable {
 	
-	//private final Object forks_mutex = new Object();
+	private static final Object forks_mutex = new Object();
 	public static final int N = 5;
 	private static int forks[] = {-1,-1,-1,-1,-1}; /* Essa lista estática 
 	irá armazenar o inteiro correspondende a id do filósofo que contém cada garfo.
@@ -33,13 +33,14 @@ public class Filosofo implements Runnable {
 		}
 	}
 	
-	public synchronized void Take_fork(int i){
-		//(forks_mutex){
+	public void Take_fork(int i){
+		synchronized(forks_mutex){
 		System.out.println("Filosofo " + this.id + " vai tentar pegar o garfo " + i);
-			while(forks[i]>0){
+			while(forks[i]>=0){
 				try {
-					System.out.println("Filosofo " + this.id + " vai dormir");
-					wait();
+					System.out.println("Filosofo " + this.id + " vai dormir. Garfo com o Filósofo " + forks[i]);
+					forks_mutex.wait();
+					System.out.println("Filosofo " + this.id + " acordou");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -48,13 +49,15 @@ public class Filosofo implements Runnable {
 			}
 			System.out.println("Filosofo " + this.id + " pegou o garfo " + i);
 			forks[i]=this.id;
-		//}	
+		}	
 	}
 	
-	public synchronized void Put_fork(int i){
+	public void Put_fork(int i){
+		synchronized(forks_mutex){
 		forks[i] = -1;
-		System.out.println("Filosofo " + this.id + " vai devolver o garfo " + i);
-		notifyAll();
+			System.out.println("Filosofo " + this.id + " vai devolver o garfo " + i);
+			forks_mutex.notifyAll();
+		}
 	}
 	
 	@Override

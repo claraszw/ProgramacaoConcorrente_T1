@@ -12,19 +12,19 @@ public class Filosofo implements Runnable {
 	private static int state[] = {0,0,0,0,0};
 	
 	private final Object mutex = new Object();
-	private static ArrayList s = new ArrayList<Semaphore>(); 
+	private static ArrayList<Semaphore> s = new ArrayList<>(); 
 	
 	private int id;
 		
 		public Filosofo(int id){
 			this.id = id;
-			s.add(new Semaphore(1));
-			try {
-				((Semaphore) s.get(id)).acquire();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			s.add(new Semaphore(0));
+//			try {
+//				((Semaphore) s.get(id)).acquire();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		
 		public void Think(){
@@ -83,7 +83,6 @@ public class Filosofo implements Runnable {
 		public void run() {
 			while(true){
 				Think();
-				take_forks();
 				take_forks();
 				Eat();
 				put_forks();
